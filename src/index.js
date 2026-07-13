@@ -7,6 +7,7 @@ import { XyDataSeries } from "scichart/Charting/Model/XyDataSeries";
 
 import { initZoomToFitChart } from "./zoom-to-fit.js";
 import { initVisibleRange } from "./visiable-range.js";
+import { initPanZoom } from "./pan-zoom.js";
 
 async function initSciChart() {
   const { sciChartSurface, wasmContext } =
@@ -111,6 +112,36 @@ initVisibleRange().then((controls) => {
   const btnStop = document.getElementById("btn-visiable-range-stop");
   const btnStart = document.getElementById("btn-visiable-range-start");
   const btnReset = document.getElementById("btn-visiable-range-reset");
+
+  if (btnStop) {
+    btnStop.addEventListener("click", () => {
+      controls.stop();
+    });
+  }
+
+  if (btnStart) {
+    btnStart.addEventListener("click", () => {
+      controls.start();
+    });
+  }
+
+  if (btnReset) {
+    btnReset.addEventListener("click", () => {
+      controls.reset();
+    });
+  }
+});
+
+// Capture controls from the pan-zoom chart so we can stop/start/reset it
+let panZoomControls = null;
+
+initPanZoom().then((controls) => {
+  panZoomControls = controls;
+
+  // Wire up buttons (they are defined in index.html)
+  const btnStop = document.getElementById("btn-pan-zoom-stop");
+  const btnStart = document.getElementById("btn-pan-zoom-start");
+  const btnReset = document.getElementById("btn-pan-zoom-reset");
 
   if (btnStop) {
     btnStop.addEventListener("click", () => {

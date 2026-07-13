@@ -1,7 +1,7 @@
 {
-  "name": "tutorial1",
+  "name": "SciChart Potfolio",
   "version": "1.0.0",
-  "description": "Tutorial with SciChart.js",
+  "description": "SciChart is the global leader in high-performance data visualization, trusted by industries where data density and precision are paramount, including aerospace, oil and gas, scientific research, and motorsport. As the only solution used across F1, relied upon by NASA, and favored by 90% of top MedTech companies, SciChart delivers real-time, cross-platform visualizations, offering unparalleled flexibility and customization.",
   "main": "index.js",
   "scripts": {
     "build": "webpack",
