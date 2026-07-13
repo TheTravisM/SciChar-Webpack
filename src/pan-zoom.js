@@ -1,11 +1,13 @@
 import { SciChartSurface } from "scichart/Charting/Visuals/SciChartSurface";
 import { NumericAxis } from "scichart/Charting/Visuals/Axis/NumericAxis";
-import { NumberRange } from "scichart/Core/NumberRange";
+import { XyDataSeries } from "scichart/Charting/Model/XyDataSeries";
+import { FastLineRenderableSeries } from "scichart/Charting/Visuals/RenderableSeries/FastLineRenderableSeries";
 import { XyScatterRenderableSeries } from "scichart/Charting/Visuals/RenderableSeries/XyScatterRenderableSeries";
 import { EllipsePointMarker } from "scichart/Charting/Visuals/PointMarkers/EllipsePointMarker";
-import { FastLineRenderableSeries } from "scichart/Charting/Visuals/RenderableSeries/FastLineRenderableSeries";
-import { XyDataSeries } from "scichart/Charting/Model/XyDataSeries";
+import {NumberRange} from "scichart/Core/NumberRange";
 import {ZoomPanModifier} from "scichart/Charting/ChartModifiers/ZoomPanModifier";
+import {RubberBandXyZoomModifier} from "scichart/Charting/ChartModifiers/RubberBandXyZoomModifier";
+import {MouseWheelZoomModifier} from "scichart/Charting/ChartModifiers/MouseWheelZoomModifier";
 import {ZoomExtentsModifier} from "scichart/Charting/ChartModifiers/ZoomExtentsModifier";
 import { EZoomState } from "scichart/types/ZoomState";
 
@@ -42,7 +44,9 @@ export async function initPanZoom() {
   const scatterData = new XyDataSeries(wasmContext, {
     dataSeriesName: "Cos(x)",
   });
-  const lineData = new XyDataSeries(wasmContext, { dataSeriesName: "Sin(x)" });
+  const lineData = new XyDataSeries(wasmContext, {
+    dataSeriesName: "Sin(x)",
+  });
 
   for (let i = 0; i < 1000; i++) {
     lineData.append(i, Math.sin(i * 0.1));
@@ -52,6 +56,11 @@ export async function initPanZoom() {
   // Assign these dataseries to the line/scatter renderableseries
   scatterSeries.dataSeries = scatterData;
   lineSeries.dataSeries = lineData;
+
+// Add ZoomExtentsModifier and disable extends animation
+sciChartSurface.chartModifiers.add(new ZoomExtentsModifier({isAnimated: false}));
+sciChartSurface.chartModifiers.add(new MouseWheelZoomModifier());
+sciChartSurface.chartModifiers.add(new RubberBandXyZoomModifier());
 
   // Set initial visible range so the chart shows data from the start
   xAxis.visibleRange = new NumberRange(0, 1000);
@@ -69,8 +78,6 @@ export async function initPanZoom() {
       // Set a sliding visible range (last 1000 points) instead of zoomExtents
       xAxis.visibleRange = new NumberRange(i - 1000, i);
     }
-
-
 
     // Repeat at ~60Hz
     timeoutId = setTimeout(updateDataFunc, 1000 / 60);

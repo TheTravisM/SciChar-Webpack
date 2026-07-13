@@ -21,6 +21,7 @@ module.exports = {
     new CopyPlugin({
       patterns: [
         { from: "src/index.html", to: "" },
+        { from: "src/index.css", to: "src" },
         { from: "node_modules/scichart/_wasm/scichart2d.wasm", to: "" },
         { from: "node_modules/scichart/_wasm/scichart2d-nosimd.wasm", to: "" },
       ],
